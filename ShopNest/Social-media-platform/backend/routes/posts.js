@@ -1,0 +1,18 @@
+const r = require('express').Router();
+const { authenticate, optionalAuth } = require('../middleware/auth');
+const upload = require('../middleware/upload');
+const c = require('../controllers/postController');
+r.get('/saved', authenticate, c.getSavedPosts);
+r.get('/trending', c.getTrending);
+r.post('/', authenticate, upload.single('image'), c.createPost);
+r.get('/', optionalAuth, c.getPosts);
+r.get('/user/:userId', optionalAuth, c.getUserPosts);
+r.get('/:id', optionalAuth, c.getPostById);
+r.put('/:id', authenticate, c.updatePost);
+r.delete('/:id', authenticate, c.deletePost);
+r.patch('/:id/archive', authenticate, c.archivePost);
+r.post('/:id/like', authenticate, c.likePost);
+r.delete('/:id/unlike', authenticate, c.unlikePost);
+r.post('/:id/save', authenticate, c.savePost);
+r.post('/:id/view', authenticate, c.recordView);
+module.exports = r;
